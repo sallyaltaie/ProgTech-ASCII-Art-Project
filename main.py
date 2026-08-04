@@ -1,15 +1,22 @@
 
-from ascii_image import ArtImage
-from renderer import render_image
+from session import Session
 
 def main():
     """ Start the ASCII Art Studio! """
-    image = ArtImage("images/stadshuset.jpg")
+    # Test
+    # image = ArtImage("images/stadshuset.jpg")
+    # print(image.get_info())
 
-    print(image.get_info())
+    # ascii_art = render_image(image)
+    # print(ascii_art)
 
-    ascii_art = render_image(image)
-    print(ascii_art)
+    session = Session()
+    session.load_image("images/stadshuset.jpg", "slalom")
+    print(session.render())
+
+    print(session.info())
+    print()
+    print(session.render())
 
 if __name__ == "__main__":
     main()
