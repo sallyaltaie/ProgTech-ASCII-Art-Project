@@ -6,7 +6,6 @@ from renderer import render_image
 class Session:
     """Represents one ASCII Art Studio session."""
 
-    # Constructor
     def __init__(self):
         """Initialize an empty session."""
 
@@ -129,5 +128,43 @@ class Session:
             return "No image loaded."
 
         self.current_image = image
-        
         return render_image(image)
+
+    def render_to_file(self, image_key, filename):
+        """Render an image and save the ASCII art to a file."""
+        ascii_art = self.render(image_key)
+
+        if ascii_art == "No image loaded.":
+            return ascii_art
+
+        with open(filename, "w") as file:
+            file.write(ascii_art)
+
+        return "ASCII art saved."
+
+    # Setters
+    def set_image_settings(self, image_key, settings_name, value):
+        """Set a property image"""
+
+        image = self.get_image(image_key)
+
+        if image is None:
+            return "No image loaded."
+
+        if settings_name == "width":
+            image.set_width(value)
+
+        elif settings_name == "height":
+            image.set_height(value)
+
+        elif settings_name == "brightness":
+            image.set_brightness(value)
+
+        elif settings_name == "contrast":
+            image.set_contrast(value)
+
+        else:
+            return "Invalid property."
+
+        self.current_image = image 
+        return "Property updated."

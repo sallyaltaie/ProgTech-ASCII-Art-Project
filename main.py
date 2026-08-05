@@ -1,34 +1,30 @@
 
 from session import Session
+from command_parser import CommandParser
 
 def main():
-    """ Start the ASCII Art Studio! """
-    # Test
-    # image = ArtImage("images/stadshuset.jpg")
-    # print(image.get_info())
-
-    # ascii_art = render_image(image)
-    # print(ascii_art)
-
+    """Start the ASCII Art Studio! """
+    
     session = Session()
-    session.load_image("images/stadshuset.jpg", "slalom")
-    print(session.render())
+    parser = CommandParser(session)
 
-    print(session.info())
+    print("============================")
+    print("Welcome to ASCII Art Studio!")
+    print("============================")
+    print("Type a command or 'quit' to exit.")
     print()
-    print(session.render())
+
+    while True:
+        command = input("Command: ")
+        result = parser.execute(command)
+
+        if result == "quit":
+            break
+
+        if result != "":
+            print(result)
+
+    print("Bye!")
 
 if __name__ == "__main__":
     main()
-
-# Start
-# ↓
-# Skapa Session
-# ↓
-# Skapa Parser
-# ↓
-# Loop
-# ↓
-# Läs kommando
-# ↓
-# Parser kör rätt metod
