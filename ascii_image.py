@@ -1,15 +1,3 @@
-# Den representerar EN bild.
-
-# Den ska hålla
-
-# filnamn
-# alias
-# Pillow-bild
-# width
-# height
-# brightness
-# contrast
-
 from PIL import Image
 
 class ArtImage:
@@ -22,16 +10,20 @@ class ArtImage:
         self.alias = alias
 
         with Image.open(filename) as img:
-            self.image = img.copy() # Save a copy of the image after the file is closed.
-            x, y = img.size
-            self.original_width = x
-            self.original_height = y
+            # Save a copy of the image after the file is closed.
+            self.image = img.copy() 
 
+            # Save the original image size.
+            self.original_width, self.original_height = img.size
+
+        # Default render size.
         self.width = 50
-        self.height = int(self.original_height * self.width / self.original_width
+        self.height = int(
+            self.original_height * self.width / self.original_width
                           
         )
 
+        # Default image settings
         self.brightness = 1.0
         self.contrast = 1.0
 

@@ -2,6 +2,7 @@
 
 from PIL import ImageEnhance 
 
+# Fixed scale from dark to light used for all ASCII rendering.
 ASCII_CHARACTERS = "@%#*+=-:. "
 
 def adjust_brightness(image, brightness):
