@@ -40,3 +40,7 @@ class TestRenderer(unittest.TestCase):
 
         ascii_art = render_image(image)
         self.assertEqual(type(ascii_art), str)
+
+
+if __name__ == "__main__":
+    unittest.main()

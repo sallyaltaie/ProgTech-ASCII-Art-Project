@@ -57,11 +57,11 @@ class TestSession(unittest.TestCase):
         """Test loading a saved session."""
         session = Session()
         session.load_image("images/stadshuset.jpg")
-        session.save_session("sessions/test_session.json")
+        session.save_session("tests/test_data/test_session.json")
 
         new_session = Session()
         result = new_session.load_session(
-            "test/test_data/test_session.json"
+            "tests/test_data/test_session.json"
         )
 
         self.assertEqual(result, "Session loaded.")

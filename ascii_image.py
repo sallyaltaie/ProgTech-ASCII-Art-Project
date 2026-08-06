@@ -66,6 +66,6 @@ class ArtImage:
             f"filename: {self.filename}\n"
             f"size: ({self.original_width}, {self.original_height})\n"
             f"target size: ({self.width}, {self.height})\n"
-            f"brightness:{self.brightness}\n"
+            f"brightness: {self.brightness}\n"
             f"contrast: {self.contrast}"
         )
