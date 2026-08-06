@@ -1,21 +1,18 @@
-# Den tar text från användare
-# load image cat.png as cat
-# session.load_image(...)
 class CommandParser:
-    """ Parse and execute commands for ASCII Art Studio """
+    """Parse and execute commands for ASCII Art Studio."""
 
     def __init__(self, session):
-        """ Initialize a parser connected to a session."""
+        """Initialize a parser connected to a session."""
         self.session = session
 
     def execute(self, command):
-        """ Parse and execute one command. """
+        """Parse and execute one command."""
         words = command.split()
 
         if len(words) == 0:
             return ""
 
-        command_name =  words[0]
+        command_name = words[0]
 
         if command_name == "info":
             return self.session.info()
@@ -24,7 +21,7 @@ class CommandParser:
             return self._execute_load(words)
 
         if command_name == "set":
-            return self._execute_settings(words)
+            return self._execute_set(words)
 
         if command_name == "render":
             return self._execute_render(words)
@@ -35,22 +32,20 @@ class CommandParser:
         if command_name == "quit":
             return "quit"
             
-        return "Unknown command"
+        return "Unknown command."
 
+    # Command handlers
     def _execute_load(self, words):
-        """ Execute a load image command."""
-
+        """Execute a load image command."""
         if len(words) == 3:
             object_type = words[1]
             filename = words[2]
 
             if object_type == "image":
-                self.session.load_image(filename)
-                return "Image loaded."
-
+                return self.session.load_image(filename)
+                
             if object_type == "session":
-                self.session.load_session(filename)
-                return "Session loaded."
+                return self.session.load_session(filename)
 
         if len(words) == 5:
             object_type = words[1]
@@ -59,35 +54,41 @@ class CommandParser:
             alias = words[4]
 
             if object_type == "image" and keyword == "as":
-                 self.session.load_image(filename, alias)
-                 return "Image loaded."
+                return self.session.load_image(filename, alias)
 
-            return "Invalid load command."
+        return "Invalid load command."
 
     def _execute_set(self, words):
         """Execute a set command."""
+        if len(words) != 4:
+            return "Invalid set command."
 
-        if len(words) == 4:
-            image_key = words[1]
-            setting = words[2]
-            value = words[3]
+        image_key = words[1]
+        setting = words[2]
+        value = words[3]
 
-            try:
-                if setting == "width" or setting == "height":
-                    value = int(value)
-                else:
-                    value = float(value)
+        valid_settings = ["width", "height", "brightness", "contrast"]
 
-            except ValueError:
-                return "Value must be a number."
+        if setting not in valid_settings:
+            return "Invalid setting."
+            
+        try:
+            if setting == "width" or setting == "height":
+                value = int(value)
+            else:
+                value = float(value)
 
-            return self.session.set_image_settings(image_key, setting, value)
-        
-        return "Invalid set command."
+        except ValueError:
+            return "Value must be a number."
+
+        try: 
+            return self.session.set_image_setting(image_key, setting, value)
+
+        except ValueError as error:
+            return str(error)
 
     def _execute_render(self, words):
-        """ Execute a render command. """
-
+        """Execute a render command."""
         if len(words) == 1:
             return self.session.render()
 
@@ -107,14 +108,12 @@ class CommandParser:
 
     def _execute_save(self, words):
         """Execute a save session command."""
-
         if len(words) == 4:
             object_type = words[1]
             keyword = words[2]
             filename = words[3]
 
             if object_type == "session" and keyword == "as":
-                self.session.save_session(filename)
-                return "Session saved."
+                return self.session.save_session(filename)
 
         return "Invalid save command."

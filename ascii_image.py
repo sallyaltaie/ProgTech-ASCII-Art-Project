@@ -1,9 +1,9 @@
 from PIL import Image
 
+
 class ArtImage:
     """ Represents one image loaded into ASCII Art Studio """
 
-# Constructor
     def __init__(self, filename, alias=None):
         """Initialize an ArtImage object."""
         self.filename = filename
@@ -36,6 +36,7 @@ class ArtImage:
         self.width = width
         self.height = int(self.original_height * self.width / self.original_width
         )
+        
     def set_height(self, height):
         """Set the image's height and adjust width."""
         if height <= 0:
@@ -65,6 +66,6 @@ class ArtImage:
             f"filename: {self.filename}\n"
             f"size: ({self.original_width}, {self.original_height})\n"
             f"target size: ({self.width}, {self.height})\n"
-            f"brightness: ({self.brightness})\n"
-            f"contrast: ({self.contrast})"
+            f"brightness:{self.brightness}\n"
+            f"contrast: {self.contrast}"
         )

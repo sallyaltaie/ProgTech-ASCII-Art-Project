@@ -3,19 +3,25 @@ import json
 from ascii_image import ArtImage
 from renderer import render_image
 
+
 class Session:
     """Represents one ASCII Art Studio session."""
 
+    # Constructor
     def __init__(self):
         """Initialize an empty session."""
 
-        self.images = {} # dictionary containing all loaded images.
+        self.images = {}
         self.current_image = None
 
-    # Methods
+    # Load / Save
     def load_image(self, filename, alias=None):
         """Load an image and make it the current image."""
-        image = ArtImage(filename, alias)
+        try:
+            image = ArtImage(filename, alias)
+
+        except OSError:
+            return f"Could not open image file: {filename}"
 
         if alias is None:
             image_key = filename
@@ -25,9 +31,98 @@ class Session:
         self.images[image_key] = image
         self.current_image = image
 
+        return "Image loaded."
+
+    def save_session(self, filename):
+        """Save the current session to a JSON file."""
+        session_data = {}
+        images_data = {}
+        current_key = None
+
+        for image_key in self.images:
+            image = self.images[image_key]
+
+            image_data = {
+                "filename": image.filename,
+                "alias": image.alias,
+                "width": image.width,
+                "height": image.height,
+                "brightness": image.brightness,
+                "contrast": image.contrast
+            }
+
+            images_data[image_key] = image_data
+
+            if image is self.current_image:
+                current_key = image_key
+
+        session_data["images"] = images_data
+        session_data["current"] = current_key
+
+        try:
+            with open(filename, "w") as file:
+                json.dump(session_data, file, indent=4)
+
+        except OSError:
+            return f"Could not save session file: {filename}"
+
+        return "Session saved."
+
+    def load_session(self, filename):
+        """Load a saved session from a JSON file."""
+        try:
+            with open(filename, "r") as file:
+                session_data = json.load(file)
+        except OSError:
+            return f"Could not open session file: {filename}"
+    
+        except json.JSONDecodeError:
+            return "The session file does not contain valid JSON."
+    
+        try:
+            images_data = session_data["images"]
+            current_key = session_data["current"]
+
+        except (KeyError, TypeError):
+            return "The session file has invalid data."
+    
+        self.images = {}
+        self.current_image = None
+
+        try:
+            for image_key in images_data:
+                image_data = images_data[image_key]
+    
+                result = self.load_image(image_data["filename"], image_data["alias"])
+    
+                if result != "Image loaded.":
+                    return result
+    
+                # Restore the exact saved target size.
+                image = self.get_image(image_key)
+                image.width = image_data["width"]
+                image.height = image_data["height"]
+    
+                image.set_brightness(image_data["brightness"])
+                image.set_contrast(image_data["contrast"])
+
+        except (KeyError, TypeError, ValueError):
+            return "The session file has invalid data."
+    
+        if current_key is not None:
+            self.current_image = self.get_image(current_key)
+    
+            if self.current_image is None:
+                return "The session file has invalid data."
+    
+        else:
+            self.current_image = None
+    
+        return "Session loaded."
+
+    # Get information
     def get_image(self, image_key):
         """Return an image by alias, filename or current."""
-
         if image_key == "current":
             return self.current_image
 
@@ -63,65 +158,10 @@ class Session:
         information += "Current image: " + str(current_key)
 
         return information
-        
-    
-    def save_session(self, filename):
-        """Save the current session to a JSON file."""
 
-        session_data = {}
-        images_data = {}
-        current_key = None
-
-        for image_key in self.images:
-            image = self.images[image_key]
-
-            image_data = {
-                "filename": image.filename,
-                "alias": image.alias,
-                "width": image.width,
-                "height": image.height,
-                "brightness": image.brightness, 
-                "contrast": image.contrast
-
-            }
-
-            images_data[image_key] = image_data
-
-            if image is self.current_image:
-                current_key = image_key
-
-        session_data["images"] = images_data
-        session_data["current"] = current_key
-
-        with open(filename, "w") as file:
-            json.dump(session_data, file, indent=4)
-
-    def load_session(self, filename):
-        """Load a saved session from a JSON file."""
-
-        with open(filename, "r") as file:
-            session_data = json.load(file)
-
-        self.images = {}
-        self.current_image = None
-
-        for image_key in session_data["images"]:
-            image_data = session_data["images"][image_key]
-
-            self.load_image(image_data["filename"], image_data["alias"])
-
-            image = self.get_image(image_key)
-            image.width = image_data["width"]
-            image.height = image_data["height"]
-            
-            image.set_brightness = image_data["brightness"]
-            image.set_contrast = image_data["contrast"]
-
-        self.current_image = self.get_image(session_data["current"])
-
+    # Rendering
     def render(self, image_key="current"):
         """Render an image and make it the current image."""
-
         image = self.get_image(image_key)
 
         if image is None:
@@ -132,39 +172,44 @@ class Session:
 
     def render_to_file(self, image_key, filename):
         """Render an image and save the ASCII art to a file."""
+        image = self.get_image(image_key)
+        
+        if image is None:
+            return "No image loaded."
+        
         ascii_art = self.render(image_key)
 
-        if ascii_art == "No image loaded.":
-            return ascii_art
+        try:
+            with open(filename, "w") as file:
+                file.write(ascii_art)
 
-        with open(filename, "w") as file:
-            file.write(ascii_art)
+        except OSError:
+            return f"Could not write output file: {filename}"
 
         return "ASCII art saved."
 
-    # Setters
-    def set_image_settings(self, image_key, settings_name, value):
-        """Set a property image"""
-
+    # Image settings 
+    def set_image_setting(self, image_key, setting, value):
+        """Set settings for an image."""
         image = self.get_image(image_key)
 
         if image is None:
             return "No image loaded."
 
-        if settings_name == "width":
+        if setting == "width":
             image.set_width(value)
 
-        elif settings_name == "height":
+        elif setting == "height":
             image.set_height(value)
 
-        elif settings_name == "brightness":
+        elif setting == "brightness":
             image.set_brightness(value)
 
-        elif settings_name == "contrast":
+        elif setting == "contrast":
             image.set_contrast(value)
 
         else:
-            return "Invalid property."
+            return "Invalid setting."
 
-        self.current_image = image 
-        return "Property updated."
+        self.current_image = image
+        return "Setting updated."

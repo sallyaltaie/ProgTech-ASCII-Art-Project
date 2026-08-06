@@ -1,0 +1,21 @@
+{
+    "images": {
+        "slalom": {
+            "filename": "images/slalom.jpg",
+            "alias": "slalom",
+            "width": 50,
+            "height": 33,
+            "brightness": 1.0,
+            "contrast": 1.0
+        },
+        "images/stadshuset.jpg": {
+            "filename": "images/stadshuset.jpg",
+            "alias": null,
+            "width": 50,
+            "height": 33,
+            "brightness": 1.0,
+            "contrast": 1.0
+        }
+    },
+    "current": "slalom"
+}

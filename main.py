@@ -1,9 +1,9 @@
-
 from session import Session
 from command_parser import CommandParser
 
+
 def main():
-    """Start the ASCII Art Studio! """
+    """Start the ASCII Art Studio."""
     
     session = Session()
     parser = CommandParser(session)
@@ -25,6 +25,7 @@ def main():
             print(result)
 
     print("Bye!")
+
 
 if __name__ == "__main__":
     main()
