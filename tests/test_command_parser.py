@@ -5,10 +5,10 @@ from command_parser import CommandParser
 
 
 class TestCommandParser(unittest.TestCase):
-    """The the CommandParser class."""
+    """Test the CommandParser class."""
 
     def test_load_image_command(self):
-        """Test the load iamge command"""
+        """Test the load iamge command."""
         session = Session()
         parser = CommandParser(session)
 
@@ -19,7 +19,7 @@ class TestCommandParser(unittest.TestCase):
         self.assertEqual(result, "Image loaded.")
 
     def test_load_image_with_alias_command(self):
-        """The loading an image with an alias."""
+        """Test loading an image with an alias."""
         session = Session()
         parser = CommandParser(session)
 
@@ -27,7 +27,7 @@ class TestCommandParser(unittest.TestCase):
 
         image = session.get_image("hus")
         
-        image = self.assertEqual(image.filename, "images/stadshuset.jpg")
+        self.assertEqual(image.filename, "images/stadshuset.jpg")
 
     def test_set_command(self):
         """Test the set command."""

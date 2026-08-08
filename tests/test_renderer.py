@@ -28,12 +28,19 @@ class TestRenderer(unittest.TestCase):
         self.assertEqual(gray.mode, "L")
 
     def test_adjust_brightness(self):
-        """test adjusting image brightness"""
+        """Test adjusting image brightness"""
         image = ArtImage("images/stadshuset.jpg")
 
         brighter = adjust_brightness(image.image, 1.5)
         self.assertEqual(brighter.size, image.image.size)
 
+    def test_adjust_contrast(self):
+        """Test adjusting image contrast."""
+        image = ArtImage("images/stadshuset.jpg")
+
+        contrast = adjust_contrast(image.image, 0.8)
+        self.assertEqual(contrast.size, image.image.size)
+        
     def test_render_image(self):
         """Test rendering an image to ASCII."""
         image = ArtImage("images/stadshuset.jpg")

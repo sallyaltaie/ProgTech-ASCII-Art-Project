@@ -8,7 +8,7 @@ The project was developed as part of a programming course and implements an obje
 ## Features
 
 - Load JPG and PNG images
-- Convert images to ASCII art
+- Render images to ASCII art
 - Manage multiple images in one session
 - Use filenames or aliases to identify images
 - Adjust:
@@ -26,15 +26,23 @@ The project was developed as part of a programming course and implements an obje
 ```
 ASCII-Art-Studio/
 ├── ascii_image.py
+├── command_parser.py
 ├── renderer.py
 ├── session.py
-├── command_parser.py
 ├── main.py
+├── README.md
+├── requirements.txt
 ├── images/
 ├── output/
 ├── sessions/
 ├── tests/
-└── requirements.txt
+│   ├── test_ascii_image.py
+│   ├── test_command_parser.py
+│   ├── test_renderer.py
+│   ├── test_session.py
+│   └── test_data/
+│       ├── test_ascii.txt
+│       └── test_session.json
 ```
 ## Architecture
 
@@ -64,6 +72,8 @@ Start the application:
 ```bash
 python main.py
 ```
+
+Images must be placed in the images/ folder before they can be loaded by the application. The program has been tested with both JPG and PNG image files.
 
 ## Running the Tests
 

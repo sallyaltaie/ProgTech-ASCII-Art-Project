@@ -2,7 +2,7 @@ from PIL import Image
 
 
 class ArtImage:
-    """ Represents one image loaded into ASCII Art Studio """
+    """Represents one image loaded into ASCII Art Studio """
 
     def __init__(self, filename, alias=None):
         """Initialize an ArtImage object."""
@@ -27,7 +27,7 @@ class ArtImage:
         self.brightness = 1.0
         self.contrast = 1.0
 
-    # Setters
+    # Setter methods
     def set_width(self, width):
         """Set the image's width and adjust height.""" 
         if width <= 0:
@@ -54,14 +54,14 @@ class ArtImage:
         self.brightness = brightness
 
     def set_contrast(self, contrast):
-        """Set the image contrast"""
+        """Set the image contrast."""
         if contrast < 0:
             raise ValueError("Contrast cannot be negative.")
 
         self.contrast = contrast
 
     def get_info(self):
-        """Return information about the image"""
+        """Return information about the image."""
         return (
             f"filename: {self.filename}\n"
             f"size: ({self.original_width}, {self.original_height})\n"

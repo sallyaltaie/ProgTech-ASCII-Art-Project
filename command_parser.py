@@ -73,7 +73,7 @@ class CommandParser:
             return "Invalid setting."
             
         try:
-            if setting == "width" or setting == "height":
+            if setting in ("width", "height"):
                 value = int(value)
             else:
                 value = float(value)

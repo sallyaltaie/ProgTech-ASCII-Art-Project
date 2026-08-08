@@ -1,11 +1,10 @@
-"""Functions for converting images into ASCII art"""
+"""Functions for converting images into ASCII art."""
 
 from PIL import ImageEnhance 
 
 
 # Fixed scale from dark to light used for all ASCII rendering.
 ASCII_CHARACTERS = "@%#*+=-:. "
-
 
 
 def adjust_brightness(image, brightness):
@@ -20,7 +19,7 @@ def adjust_contrast(image, contrast):
 
 def resize_image(image, width, height):
     """Resize the image to the requested target size."""
-    return image.resize((width, height)) 
+    return image.resize((width, height))
 
 def convert_to_grayscale(image):
     """Convert an image to 8-bit grayscale."""
