@@ -2,12 +2,14 @@ import unittest
 
 from ascii_image import ArtImage
 
+TEST_IMAGE_1 = "images/stadshuset.jpg"
+TEST_IMAGE_2 = "images/mickey.png"
 
 class TestArtImage(unittest.TestCase):
     """Test the ArtImage class."""
 
     def test_default_settings(self):
-        image = ArtImage("images/stadshuset.jpg")
+        image = ArtImage(TEST_IMAGE_1)
 
         self.assertEqual(image.width, 50)
         self.assertEqual(image.brightness, 1.0)
@@ -15,7 +17,7 @@ class TestArtImage(unittest.TestCase):
 
     def test_change_image_size(self):
         """Test changing the image width and height."""
-        image = ArtImage("images/stadshuset.jpg")
+        image = ArtImage(TEST_IMAGE_1)
 
         image.set_width(80)
         self.assertEqual(image.width, 80)
@@ -35,7 +37,7 @@ class TestArtImage(unittest.TestCase):
 
     def test_change_image_settings(self):
         """Test changing brightness and contrast."""
-        image = ArtImage("images/stadshuset.jpg")
+        image = ArtImage(TEST_IMAGE_1)
 
         image.set_brightness(1.5)
         self.assertEqual(image.brightness, 1.5)
